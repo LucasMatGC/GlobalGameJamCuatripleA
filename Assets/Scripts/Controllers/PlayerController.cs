@@ -76,7 +76,7 @@ public class PlayerController : MonoBehaviour
     {
         canJumpOrSlide = !canJumpOrSlide;
         rbPlayer.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
-        StartCoroutine(ActivateFlag(1, false));
+        StartCoroutine(ActivateFlag(jumpForce*0.2f, false));
 
     }
 
