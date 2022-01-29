@@ -10,15 +10,17 @@ public class GameController : MonoBehaviour
     public AudioSource music1, music2, victoryMusic, gameOverMusic;
     public Text countDownText;
 
-    public int countDownValue = 1;
+    public int countDownValue = 3;
     private bool isGameActive = false;
     private bool isGameFinished = false;
+    private AudioSource currentMusic;
 
     // Start is called before the first frame update
     void Start()
     {
 
         instance = this;
+        currentMusic = music1;
         
     }
 
@@ -50,7 +52,7 @@ public class GameController : MonoBehaviour
            
         countDownText.text = "YA!";
         isGameActive = true;
-        music1.Play();
+        currentMusic.Play();
         yield return new WaitForSeconds(1f);
         countDownText.enabled = false;
 
@@ -83,7 +85,7 @@ public class GameController : MonoBehaviour
         isGameFinished = false;
         isGameActive = false;
         countDownText.enabled = true;
-        music1.Stop();
+        currentMusic.Stop();
         //gameOverMusic.Play();
         countDownText.text = "Te chocaste! Vuelve a empezar!";
 
@@ -95,8 +97,15 @@ public class GameController : MonoBehaviour
 
         isGameFinished = true;
         isGameActive = false;
-        music1.Stop();
+        currentMusic.Stop();
         //victoryMusic.Play();
+
+    }
+
+    public AudioSource getCurrentMusic()
+    {
+
+        return currentMusic;
 
     }
 
