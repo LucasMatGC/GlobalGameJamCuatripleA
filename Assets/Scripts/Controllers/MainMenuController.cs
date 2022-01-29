@@ -78,7 +78,7 @@ public class MainMenuController : MonoBehaviour
     private IEnumerator LoadGameScene()
     {
         // Carga la siguiente escena mientras el resto del código carga. La carga es prácticamente instantánea.
-        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync("TestLevelLucas");
+        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync("Prueba1");
 
         // Espera hasta que la escena esté cargada
         while (!asyncLoad.isDone)

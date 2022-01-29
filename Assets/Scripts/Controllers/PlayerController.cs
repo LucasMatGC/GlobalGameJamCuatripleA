@@ -6,21 +6,27 @@ public class PlayerController : MonoBehaviour
 {
 
     public GameObject player;
-    private Rigidbody rbPlayer;
-    private SphereCollider colliderPlayer;
     public Material materialPlayer;
+    public AudioSource jumpAudio, slideAudio, hitAudio;
     public float movementSpeed = 0.1f;
     public float jumpForce = 10.0f;
+    public float hitTime = 1.0f;
     public float slideTime = 0.5f;
     public float slideSquish = 2;
 
+    private Rigidbody rbPlayer;
+    private SphereCollider colliderPlayer;
     private bool canMove = true;
     private bool canJumpOrSlide = true;
     private bool canHit = true;
 
+    private GameController gameController;
+
     // Start is called before the first frame update
     void Start()
     {
+
+        gameController = GameController.instance;
 
         rbPlayer = this.GetComponent<Rigidbody>();
         colliderPlayer = this.GetComponent<SphereCollider>();
@@ -31,8 +37,12 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
 
-        MovePlayer();
-        ManageInput();
+        if (gameController.IsGameRunning())
+        {
+            MovePlayer();
+            ManageInput();
+
+        }
         
 
     }
@@ -54,22 +64,18 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetButtonDown("JumpButton") && canJumpOrSlide)
         {
-            Debug.Log("Jumping!");
             JumpAction();
 
         } else if (Input.GetButtonDown("SlideButton") && canJumpOrSlide)
         {
-            Debug.Log("Sliding!");
             SlideAction();
 
         } else if (Input.GetButtonDown("HitButton") && canHit)
         {
-            Debug.Log("Hiting!");
             HitAction();
 
         } else if (Input.GetButtonDown("StopButton"))
         {
-            Debug.Log("Stop or continue!");
             canMove = !canMove;
 
         }
@@ -79,6 +85,7 @@ public class PlayerController : MonoBehaviour
     private void JumpAction()
     {
         canJumpOrSlide = !canJumpOrSlide;
+        //jumpAudio.Play();
         rbPlayer.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
         StartCoroutine(ActivateFlag(jumpForce*0.2f, false));
 
@@ -88,9 +95,10 @@ public class PlayerController : MonoBehaviour
     {
 
         canJumpOrSlide = !canJumpOrSlide;
+        //slideAudio.Play();
         this.transform.localScale = new Vector3(this.transform.localScale.x, this.transform.localScale.y/slideSquish, this.transform.localScale.z);
-        //colliderPlayer.radius = colliderPlayer.radius / (slideSquish);
-        //this.transform.position = new Vector3(this.transform.position.x, this.transform.position.y / (slideSquish), this.transform.position.z);
+        colliderPlayer.radius /= (slideSquish);
+        this.transform.position = new Vector3(this.transform.position.x, this.transform.position.y - (slideSquish*0.1f), this.transform.position.z);
         StartCoroutine(ActivateFlag(slideTime, true));
 
     }
@@ -99,8 +107,9 @@ public class PlayerController : MonoBehaviour
     {
 
         canHit = !canHit;
+        //hitAudio.Play();
         materialPlayer.color = Color.red;
-        StartCoroutine(HitProcess(0.5f));
+        StartCoroutine(HitProcess(hitTime));
 
     }
 
@@ -114,8 +123,8 @@ public class PlayerController : MonoBehaviour
         {
 
             this.transform.localScale = new Vector3(this.transform.localScale.x, this.transform.localScale.y * slideSquish, this.transform.localScale.z);
-            //colliderPlayer.radius = colliderPlayer.radius * (slideSquish);
-            //this.transform.position = new Vector3(this.transform.position.x, this.transform.position.y * (slideSquish*0.8f), this.transform.position.z);
+            this.transform.position = new Vector3(this.transform.position.x, this.transform.position.y + (slideSquish * 0.1f), this.transform.position.z);
+            colliderPlayer.radius = colliderPlayer.radius * (slideSquish);
 
         }
 
@@ -128,6 +137,22 @@ public class PlayerController : MonoBehaviour
         canHit = !canHit;
         materialPlayer.color = Color.cyan;
 
+    }
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.tag == "JumpSlide")
+        {
+            Debug.Log("Choque obstaculo!");
+            gameController.EndGame();
+        }
+        else if (other.tag == "Hit" && canHit)
+        {
+            Debug.Log("Obstactulo sin destruir!");
+            gameController.EndGame();
+        }
+        else if (other.tag == "Hit" && !canHit)
+            //Objeto roto
+            Debug.Log("Objeto roto!");
     }
 
 }
