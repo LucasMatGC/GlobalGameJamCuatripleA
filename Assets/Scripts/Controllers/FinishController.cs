@@ -26,10 +26,7 @@ public class FinishController : MonoBehaviour
     void OnTriggerEnter(Collider other)
     {
         if(other.tag == "Player")
-        {
-
             gameController.ArriveDestination();
 
-        }
     }
 }

@@ -29,20 +29,15 @@ public class PauseMenuContoller : MonoBehaviour
     {
 
         if (Input.GetButtonDown("MenuButton"))
-        {
-
             PauseMenu();
-
-            
-        }
 
         if (pausedGame)
         {
             
-            if (!mouseUser && Input.mousePosition != mouseInitPos) mouseUser = true;
-        }
+            if (!mouseUser && Input.mousePosition != mouseInitPos)
+                mouseUser = true;
 
-        else EventSystem.current.SetSelectedGameObject(null);
+        } else EventSystem.current.SetSelectedGameObject(null);
 
         if (mouseUser) Cursor.visible = true;
         else Cursor.visible = false;

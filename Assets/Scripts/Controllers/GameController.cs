@@ -33,7 +33,7 @@ public class GameController : MonoBehaviour
         else if (!isGameActive && isGameFinished)
             ShowResults();
         else if (isGameActive && !isGameFinished)
-            ProcessTime();
+            return;
         
     }
 
@@ -63,12 +63,6 @@ public class GameController : MonoBehaviour
 
         countDownText.enabled = true;
         countDownText.text = "FIN";
-
-    }
-
-    private void ProcessTime()
-    {
-
 
     }
 

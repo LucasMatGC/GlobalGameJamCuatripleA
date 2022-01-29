@@ -16,8 +16,6 @@ public class PlayerController : MonoBehaviour
     public float slideSquish = 2;
 
     private string jumpAudioCode = "Assets/Audio/SFX/GGJ2022_SFX_Jump_", slideAudioCode = "Assets/Audio/SFX/GGJ2022_SFX_Slide_", hitAudioCode = "Assets/Audio/SFX/GGJ2022_SFX_Hit_";
-    private Rigidbody rbPlayer;
-    private BoxCollider[] collidersPlayer;
     private Animator playerAnimator;
     private bool canMove = true;
     private bool canJumpOrSlide = true;
@@ -30,9 +28,6 @@ public class PlayerController : MonoBehaviour
     {
 
         gameController = GameController.instance;
-
-        rbPlayer = this.GetComponent<Rigidbody>();
-        collidersPlayer = this.GetComponents<BoxCollider>();
         playerAnimator = this.GetComponent<Animator>();
 
     }
@@ -56,11 +51,7 @@ public class PlayerController : MonoBehaviour
     {
 
         if (player && canMove)
-        {
-
             player.transform.position = new Vector3(player.transform.position.x, player.transform.position.y, player.transform.position.z + (movementSpeed * Time.deltaTime));
-
-        }
 
     }
 
@@ -68,22 +59,17 @@ public class PlayerController : MonoBehaviour
     {
 
         if (Input.GetButtonDown("JumpButton") && canJumpOrSlide)
-        {
             JumpAction();
 
-        } else if (Input.GetButtonDown("SlideButton") && canJumpOrSlide)
-        {
+        else if (Input.GetButtonDown("SlideButton") && canJumpOrSlide)
             SlideAction();
 
-        } else if (Input.GetButtonDown("HitButton") && canHit)
-        {
+        else if (Input.GetButtonDown("HitButton") && canHit)
             HitAction();
 
-        } else if (Input.GetButtonDown("StopButton"))
-        {
+        else if (Input.GetButtonDown("StopButton"))
             canMove = !canMove;
 
-        }
 
     }
 
@@ -92,8 +78,7 @@ public class PlayerController : MonoBehaviour
         canJumpOrSlide = !canJumpOrSlide;
         SelectAudio(jumpAudio, jumpAudioCode);
         playerAnimator.SetTrigger("Jump");
-        rbPlayer.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
-        StartCoroutine(ActivateFlag(jumpForce*0.2f, false));
+        StartCoroutine(ActivateFlag(jumpForce*0.2f));
 
     }
 
@@ -101,15 +86,9 @@ public class PlayerController : MonoBehaviour
     {
 
         canJumpOrSlide = !canJumpOrSlide;
-        //slideAudio.Play();
+        SelectAudio(slideAudio, slideAudioCode);
         playerAnimator.SetTrigger("Slide");
-        //this.transform.localScale = new Vector3(this.transform.localScale.x, this.transform.localScale.y/slideSquish, this.transform.localScale.z);
-        collidersPlayer[0].size = new Vector3(collidersPlayer[0].size.x, collidersPlayer[0].size.y / slideSquish, collidersPlayer[0].size.z); ;
-        collidersPlayer[0].center = new Vector3(collidersPlayer[0].center.x, collidersPlayer[0].center.y / slideSquish, collidersPlayer[0].center.z);
-        collidersPlayer[1].size = new Vector3(collidersPlayer[1].size.x, collidersPlayer[1].size.y / slideSquish, collidersPlayer[1].size.z); ;
-        collidersPlayer[1].center = new Vector3(collidersPlayer[1].center.x, collidersPlayer[1].center.y / slideSquish, collidersPlayer[1].center.z);
-        //this.transform.position = new Vector3(this.transform.position.x, this.transform.position.y / slideSquish, this.transform.position.z);
-        StartCoroutine(ActivateFlag(slideTime, true));
+        StartCoroutine(ActivateFlag(slideTime));
 
     }
 
@@ -117,7 +96,7 @@ public class PlayerController : MonoBehaviour
     {
 
         canHit = !canHit;
-        //hitAudio.Play();
+        SelectAudio(hitAudio, hitAudioCode);
         playerAnimator.SetTrigger("Hit");
         materialPlayer.color = Color.red;
         StartCoroutine(HitProcess(hitTime));
@@ -134,23 +113,11 @@ public class PlayerController : MonoBehaviour
 
     }
 
-    private IEnumerator ActivateFlag(float waitTime, bool isSliding)
+    private IEnumerator ActivateFlag(float waitTime)
     {
 
         yield return new WaitForSeconds(waitTime);
         canJumpOrSlide = !canJumpOrSlide;
-
-        if (isSliding)
-        {
-
-            //this.transform.localScale = new Vector3(this.transform.localScale.x, this.transform.localScale.y * slideSquish, this.transform.localScale.z);
-            //this.transform.position = new Vector3(this.transform.position.x, this.transform.position.y * slideSquish, this.transform.position.z);
-            collidersPlayer[0].size = new Vector3(collidersPlayer[0].size.x, collidersPlayer[0].size.y * slideSquish, collidersPlayer[0].size.z); ;
-            collidersPlayer[0].center = new Vector3(collidersPlayer[0].center.x, collidersPlayer[0].center.y * slideSquish, collidersPlayer[0].center.z);
-            collidersPlayer[1].size = new Vector3(collidersPlayer[1].size.x, collidersPlayer[1].size.y * slideSquish, collidersPlayer[1].size.z); ;
-            collidersPlayer[1].center = new Vector3(collidersPlayer[1].center.x, collidersPlayer[1].center.y * slideSquish, collidersPlayer[1].center.z);
-
-        }
 
     }
 
@@ -159,19 +126,17 @@ public class PlayerController : MonoBehaviour
 
         yield return new WaitForSeconds(waitTime);
         canHit = !canHit;
-        materialPlayer.color = Color.cyan;
 
     }
+
     void OnTriggerEnter(Collider other)
     {
         if (other.tag == "JumpSlide")
-        {
             gameController.EndGame();
-        }
+
         else if (other.tag == "Hit" && canHit)
-        {
             gameController.EndGame();
-        }
+
         else if (other.tag == "Hit" && !canHit)
             return;
     }
