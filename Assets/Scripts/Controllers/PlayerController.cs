@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
 
 public class PlayerController : MonoBehaviour
 {
@@ -14,8 +15,10 @@ public class PlayerController : MonoBehaviour
     public float slideTime = 0.5f;
     public float slideSquish = 2;
 
+    private string jumpAudioCode = "Assets/Audio/SFX/GGJ2022_SFX_Jump_", slideAudioCode = "Assets/Audio/SFX/GGJ2022_SFX_Slide_", hitAudioCode = "Assets/Audio/SFX/GGJ2022_SFX_Hit_";
     private Rigidbody rbPlayer;
     private BoxCollider[] collidersPlayer;
+    private Animator playerAnimator;
     private bool canMove = true;
     private bool canJumpOrSlide = true;
     private bool canHit = true;
@@ -30,6 +33,7 @@ public class PlayerController : MonoBehaviour
 
         rbPlayer = this.GetComponent<Rigidbody>();
         collidersPlayer = this.GetComponents<BoxCollider>();
+        playerAnimator = this.GetComponent<Animator>();
 
     }
 
@@ -86,7 +90,8 @@ public class PlayerController : MonoBehaviour
     private void JumpAction()
     {
         canJumpOrSlide = !canJumpOrSlide;
-        //jumpAudio.Play();
+        SelectAudio(jumpAudio, jumpAudioCode);
+        playerAnimator.SetTrigger("Jump");
         rbPlayer.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
         StartCoroutine(ActivateFlag(jumpForce*0.2f, false));
 
@@ -97,6 +102,7 @@ public class PlayerController : MonoBehaviour
 
         canJumpOrSlide = !canJumpOrSlide;
         //slideAudio.Play();
+        playerAnimator.SetTrigger("Slide");
         //this.transform.localScale = new Vector3(this.transform.localScale.x, this.transform.localScale.y/slideSquish, this.transform.localScale.z);
         collidersPlayer[0].size = new Vector3(collidersPlayer[0].size.x, collidersPlayer[0].size.y / slideSquish, collidersPlayer[0].size.z); ;
         collidersPlayer[0].center = new Vector3(collidersPlayer[0].center.x, collidersPlayer[0].center.y / slideSquish, collidersPlayer[0].center.z);
@@ -112,8 +118,19 @@ public class PlayerController : MonoBehaviour
 
         canHit = !canHit;
         //hitAudio.Play();
+        playerAnimator.SetTrigger("Hit");
         materialPlayer.color = Color.red;
         StartCoroutine(HitProcess(hitTime));
+
+    }
+
+    private void SelectAudio(AudioSource audioSource, string nameCode)
+    {
+
+        string pathFile = nameCode + (Random.Range(0, 3).ToString()) + ".ogg";
+        audioSource.clip = (AudioClip)AssetDatabase.LoadAssetAtPath(nameCode + (Random.Range(0, 3).ToString()) + ".ogg", typeof(AudioClip));
+        audioSource.Play();
+        
 
     }
 
@@ -149,17 +166,14 @@ public class PlayerController : MonoBehaviour
     {
         if (other.tag == "JumpSlide")
         {
-            Debug.Log("Choque obstaculo!");
             gameController.EndGame();
         }
         else if (other.tag == "Hit" && canHit)
         {
-            Debug.Log("Obstactulo sin destruir!");
             gameController.EndGame();
         }
         else if (other.tag == "Hit" && !canHit)
-            //Objeto roto
-            Debug.Log("Objeto roto!");
+            return;
     }
 
 }

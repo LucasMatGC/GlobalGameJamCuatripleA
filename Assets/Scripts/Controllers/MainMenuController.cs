@@ -35,7 +35,7 @@ public class MainMenuController : MonoBehaviour
         {
             mouseUser = true;
         }
-        if (Array.Exists(pressAnyCanvases, el => el == currentCanvas) && Input.anyKeyDown)
+        if (Input.anyKeyDown)
         {
             if (currentCanvas.name == "Introduction")
             {
@@ -78,7 +78,7 @@ public class MainMenuController : MonoBehaviour
     private IEnumerator LoadGameScene()
     {
         // Carga la siguiente escena mientras el resto del código carga. La carga es prácticamente instantánea.
-        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync("Prueba1");
+        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync("TestLevelLucas");
 
         // Espera hasta que la escena esté cargada
         while (!asyncLoad.isDone)
