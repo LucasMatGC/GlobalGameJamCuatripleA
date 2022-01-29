@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: be5894a27ccc36d48a8f30bfcd2748c7
+guid: 8274786101d746e4bb2c874a8daebaf0
 ModelImporter:
   serializedVersion: 20200
   internalIDToNameTable: []
@@ -7,8 +7,23 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: LibroGrande1
+    second: {fileID: 2100000, guid: 0a331956294a75b4aa520438cbbe2bdc, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: LibroGrande2
+    second: {fileID: 2100000, guid: a4a69d84f038fbf4184bb5d7abf606a6, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: LibroPeque4
+    second: {fileID: 2100000, guid: d9a060b38a9196842bf558b47b9ff8ff, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: lambert1
-    second: {fileID: 2100000, guid: 37124d71ed2fceb479f0e3ef3b65d821, type: 2}
+    second: {fileID: 2100000, guid: 8834edcd057dafb4b838d1609445e39e, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -39,7 +54,7 @@ ModelImporter:
     isReadable: 0
   meshes:
     lODScreenPercentages: []
-    globalScale: 3.7
+    globalScale: 0.5
     meshCompression: 0
     addColliders: 0
     useSRGBMaterialColor: 1
@@ -90,7 +105,7 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
-    globalScale: 0.037
+    globalScale: 0.5
     rootMotionBoneName: 
     hasTranslationDoF: 0
     hasExtraRoot: 0
