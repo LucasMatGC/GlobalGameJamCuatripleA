@@ -1590,21 +1590,8 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 40b3f6023d714ae4589cb5303fdbd32b, type: 3}
   m_PrefabInstance: {fileID: 1566622107}
   m_PrefabAsset: {fileID: 0}
---- !u!135 &147300638
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 147300636}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!135 &147300639
-SphereCollider:
+--- !u!65 &147300638
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -1614,8 +1601,8 @@ SphereCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 136.67627, y: 120, z: 136.67627}
+  m_Center: {x: 0, y: 58, z: 0}
 --- !u!114 &147300640
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1633,8 +1620,8 @@ MonoBehaviour:
   jumpAudio: {fileID: 1894921997}
   slideAudio: {fileID: 1871503963}
   hitAudio: {fileID: 20487595}
-  movementSpeed: 0.009
-  jumpForce: 8
+  movementSpeed: 1
+  jumpForce: 5
   hitTime: 1
   slideTime: 0.5
   slideSquish: 2
@@ -1654,6 +1641,19 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 3
+--- !u!65 &147300643
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 147300636}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 136.67627, y: 120, z: 136.67627}
+  m_Center: {x: 0, y: 58, z: 0}
 --- !u!1 &162289371
 GameObject:
   m_ObjectHideFlags: 0
@@ -4621,7 +4621,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 367965089}
   m_LocalRotation: {x: 0.27907753, y: -0, z: -0, w: 0.9602686}
-  m_LocalPosition: {x: 1.4689484, y: 3.3585758, z: -3.0822124}
+  m_LocalPosition: {x: 1.4689484, y: 3.66, z: -3.56}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1011039834}
@@ -12974,7 +12974,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1011039833}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.4689484, y: -0.226, z: 0.415}
+  m_LocalPosition: {x: -1.4689484, y: -0.21, z: 0.415}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 367965090}
@@ -19037,10 +19037,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 40b3f6023d714ae4589cb5303fdbd32b, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 6c14b35b9ecd4ea4bba77335e7d543a8, type: 2}
     - target: {fileID: 919132149155446097, guid: 40b3f6023d714ae4589cb5303fdbd32b, type: 3}
       propertyPath: m_Name
       value: Slime (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 1227827566673365605, guid: 40b3f6023d714ae4589cb5303fdbd32b, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 3dd7356671fa29e4ca1a688f69eb6291, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 40b3f6023d714ae4589cb5303fdbd32b, type: 3}
 --- !u!1 &1590634838

@@ -15,7 +15,7 @@ public class PlayerController : MonoBehaviour
     public float slideSquish = 2;
 
     private Rigidbody rbPlayer;
-    private SphereCollider colliderPlayer;
+    private BoxCollider[] collidersPlayer;
     private bool canMove = true;
     private bool canJumpOrSlide = true;
     private bool canHit = true;
@@ -29,7 +29,7 @@ public class PlayerController : MonoBehaviour
         gameController = GameController.instance;
 
         rbPlayer = this.GetComponent<Rigidbody>();
-        colliderPlayer = this.GetComponent<SphereCollider>();
+        collidersPlayer = this.GetComponents<BoxCollider>();
 
     }
 
@@ -54,7 +54,7 @@ public class PlayerController : MonoBehaviour
         if (player && canMove)
         {
 
-            player.transform.position = new Vector3(player.transform.position.x, player.transform.position.y, player.transform.position.z + movementSpeed);
+            player.transform.position = new Vector3(player.transform.position.x, player.transform.position.y, player.transform.position.z + (movementSpeed * Time.deltaTime));
 
         }
 
@@ -97,9 +97,12 @@ public class PlayerController : MonoBehaviour
 
         canJumpOrSlide = !canJumpOrSlide;
         //slideAudio.Play();
-        this.transform.localScale = new Vector3(this.transform.localScale.x, this.transform.localScale.y/slideSquish, this.transform.localScale.z);
-        colliderPlayer.radius /= (slideSquish);
-        this.transform.position = new Vector3(this.transform.position.x, this.transform.position.y - (slideSquish*0.1f), this.transform.position.z);
+        //this.transform.localScale = new Vector3(this.transform.localScale.x, this.transform.localScale.y/slideSquish, this.transform.localScale.z);
+        collidersPlayer[0].size = new Vector3(collidersPlayer[0].size.x, collidersPlayer[0].size.y / slideSquish, collidersPlayer[0].size.z); ;
+        collidersPlayer[0].center = new Vector3(collidersPlayer[0].center.x, collidersPlayer[0].center.y / slideSquish, collidersPlayer[0].center.z);
+        collidersPlayer[1].size = new Vector3(collidersPlayer[1].size.x, collidersPlayer[1].size.y / slideSquish, collidersPlayer[1].size.z); ;
+        collidersPlayer[1].center = new Vector3(collidersPlayer[1].center.x, collidersPlayer[1].center.y / slideSquish, collidersPlayer[1].center.z);
+        //this.transform.position = new Vector3(this.transform.position.x, this.transform.position.y / slideSquish, this.transform.position.z);
         StartCoroutine(ActivateFlag(slideTime, true));
 
     }
@@ -123,9 +126,12 @@ public class PlayerController : MonoBehaviour
         if (isSliding)
         {
 
-            this.transform.localScale = new Vector3(this.transform.localScale.x, this.transform.localScale.y * slideSquish, this.transform.localScale.z);
-            this.transform.position = new Vector3(this.transform.position.x, this.transform.position.y + (slideSquish * 0.1f), this.transform.position.z);
-            colliderPlayer.radius = colliderPlayer.radius * (slideSquish);
+            //this.transform.localScale = new Vector3(this.transform.localScale.x, this.transform.localScale.y * slideSquish, this.transform.localScale.z);
+            //this.transform.position = new Vector3(this.transform.position.x, this.transform.position.y * slideSquish, this.transform.position.z);
+            collidersPlayer[0].size = new Vector3(collidersPlayer[0].size.x, collidersPlayer[0].size.y * slideSquish, collidersPlayer[0].size.z); ;
+            collidersPlayer[0].center = new Vector3(collidersPlayer[0].center.x, collidersPlayer[0].center.y * slideSquish, collidersPlayer[0].center.z);
+            collidersPlayer[1].size = new Vector3(collidersPlayer[1].size.x, collidersPlayer[1].size.y * slideSquish, collidersPlayer[1].size.z); ;
+            collidersPlayer[1].center = new Vector3(collidersPlayer[1].center.x, collidersPlayer[1].center.y * slideSquish, collidersPlayer[1].center.z);
 
         }
 
