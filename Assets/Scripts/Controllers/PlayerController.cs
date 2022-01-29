@@ -7,9 +7,12 @@ public class PlayerController : MonoBehaviour
 
     public GameObject player;
     private Rigidbody rbPlayer;
+    private SphereCollider colliderPlayer;
     public Material materialPlayer;
     public float movementSpeed = 0.1f;
     public float jumpForce = 10.0f;
+    public float slideTime = 0.5f;
+    public float slideSquish = 2;
 
     private bool canMove = true;
     private bool canJumpOrSlide = true;
@@ -20,6 +23,7 @@ public class PlayerController : MonoBehaviour
     {
 
         rbPlayer = this.GetComponent<Rigidbody>();
+        colliderPlayer = this.GetComponent<SphereCollider>();
 
     }
 
@@ -84,8 +88,10 @@ public class PlayerController : MonoBehaviour
     {
 
         canJumpOrSlide = !canJumpOrSlide;
-        this.transform.localScale = new Vector3(this.transform.localScale.x, this.transform.localScale.y/2, this.transform.localScale.z);
-        StartCoroutine(ActivateFlag(0.5f, true));
+        this.transform.localScale = new Vector3(this.transform.localScale.x, this.transform.localScale.y/slideSquish, this.transform.localScale.z);
+        //colliderPlayer.radius = colliderPlayer.radius / (slideSquish);
+        //this.transform.position = new Vector3(this.transform.position.x, this.transform.position.y / (slideSquish), this.transform.position.z);
+        StartCoroutine(ActivateFlag(slideTime, true));
 
     }
 
@@ -105,7 +111,13 @@ public class PlayerController : MonoBehaviour
         canJumpOrSlide = !canJumpOrSlide;
 
         if (isSliding)
-            this.transform.localScale = new Vector3(this.transform.localScale.x, this.transform.localScale.y * 2, this.transform.localScale.z);
+        {
+
+            this.transform.localScale = new Vector3(this.transform.localScale.x, this.transform.localScale.y * slideSquish, this.transform.localScale.z);
+            //colliderPlayer.radius = colliderPlayer.radius * (slideSquish);
+            //this.transform.position = new Vector3(this.transform.position.x, this.transform.position.y * (slideSquish*0.8f), this.transform.position.z);
+
+        }
 
     }
 
