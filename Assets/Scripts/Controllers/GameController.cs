@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour
 {
@@ -10,9 +11,11 @@ public class GameController : MonoBehaviour
     public AudioSource music1, music2, victoryMusic, gameOverMusic, fireSource;
     public RawImage gameOverImage;
     public Text countDownText;
+    public GameObject instruction;
     public GameObject player;
     public GameObject fire;
     public GameObject potion;
+    public GameObject endScreen;
     public BoxCollider secondFinishLine;
     public MeshRenderer slimeCore, slimeRim;
     public Material fireCore, fireRim, waterCore, waterRim;
@@ -24,6 +27,7 @@ public class GameController : MonoBehaviour
     private bool isGameActive = false;
     private bool isGameFinished = false;
     private bool isPlayerDead = false;
+    private bool areInstructionsActive = true;
     private bool reachedEnd = false;
 
     // Start is called before the first frame update
@@ -40,14 +44,22 @@ public class GameController : MonoBehaviour
     void Update()
     {
 
-        if (!isGameActive && !isGameFinished && !countDownText.enabled)
+        if (!isGameActive && !isGameFinished && !countDownText.enabled && !areInstructionsActive)
             StartCoroutine(CountDown());
         else if (!isGameActive && isGameFinished)
+        {
+
             ShowResults();
+            if (Input.GetButtonDown("JumpButton"))
+                SceneManager.LoadSceneAsync("MainMenu");
+
+        }
         else if (isGameActive && !isGameFinished)
             return;
         else if (isPlayerDead && Input.GetButtonDown("JumpButton"))
             ManageRespawn();
+        else if (areInstructionsActive && Input.GetButtonDown("JumpButton"))
+            DeactivateInstructions();
 
 
     }
@@ -78,9 +90,13 @@ public class GameController : MonoBehaviour
     {
 
         countDownText.enabled = true;
-        countDownText.text = "FIN";
+        countDownText.text = "Press jump to return to the Main Menu";
+        countDownText.transform.position = new Vector3(countDownText.transform.position.x, -360f, countDownText.transform.position.z);
+        countDownText.fontSize = 80;
+        countDownText.color = Color.white;
+        endScreen.SetActive(true);
 
-    }
+}
 
     public bool IsGameRunning()
     {
@@ -99,7 +115,7 @@ public class GameController : MonoBehaviour
         isPlayerDead = true;
         currentMusic.Stop();
         gameOverMusic.Play();
-        countDownText.text = "Te chocaste! Vuelve a empezar!\nPulsa barra espaciadora";
+        countDownText.text = "¡Game Over!\nPress spacebar to restart";
         countDownText.fontSize = 60;
 
 
@@ -134,7 +150,7 @@ public class GameController : MonoBehaviour
         fire.SetActive(true);
         potion.SetActive(false);
         fireSource.Play();
-        RespawnObstacles();
+        //RespawnObstacles();
         checkpoint = new Vector3(-player.transform.transform.position.x, player.transform.transform.position.y, player.transform.transform.position.z);
         player.transform.transform.position = checkpoint;
         player.transform.transform.rotation = new Quaternion(player.transform.transform.rotation.x, 180, player.transform.transform.rotation.z, player.transform.transform.rotation.w);
@@ -165,13 +181,13 @@ public class GameController : MonoBehaviour
         countDownValue = 3;
         gameOverImage.enabled = false;
         isGameActive = false;
-        RespawnObstacles();
         isPlayerDead = false;
         player.transform.position = checkpoint;
+        //RespawnObstacles();
 
     }
 
-    public void AddRespawnableObstacle (GameObject obstable)
+    public void AddRespawnableObstacle(GameObject obstable)
     {
 
         obstable.SetActive(false);
@@ -190,6 +206,14 @@ public class GameController : MonoBehaviour
         }
 
         respawnableObstacles.Clear();
+
+    }
+
+    public void DeactivateInstructions()
+    {
+
+        instruction.SetActive(false);
+        areInstructionsActive = false;
 
     }
 

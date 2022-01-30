@@ -73,8 +73,9 @@ public class PlayerController : MonoBehaviour
         else if (Input.GetButtonDown("HitButton") && canHit)
             HitAction();
 
-        else if (Input.GetButtonDown("StopButton"))
-            canMove = !canMove;
+        //Only for Debug
+        //else if (Input.GetButtonDown("StopButton"))
+        //    canMove = !canMove;
 
 
     }
@@ -139,13 +140,14 @@ public class PlayerController : MonoBehaviour
         if (other.tag == "JumpSlide")
             gameController.EndGame();
 
-        else if ((other.tag == "Hit" && canHit) || (other.tag == "Hit" || !canJumpOrSlide))
+        else if ((other.tag == "Hit" && canHit))
             gameController.EndGame();
 
         else if (other.tag == "Hit" && !canHit)
         {
 
-            gameController.AddRespawnableObstacle(other.gameObject);
+            other.gameObject.SetActive(false);
+            //gameController.AddRespawnableObstacle(other.gameObject);
             return;
 
         }
