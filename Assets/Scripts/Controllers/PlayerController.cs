@@ -51,7 +51,13 @@ public class PlayerController : MonoBehaviour
     {
 
         if (player && canMove)
-            player.transform.position = new Vector3(player.transform.position.x, player.transform.position.y, player.transform.position.z + (movementSpeed * Time.deltaTime));
+        {
+            if (gameController.isFirstLoop())
+                player.transform.position = new Vector3(player.transform.position.x, player.transform.position.y, player.transform.position.z + (movementSpeed * Time.deltaTime));
+            else
+                player.transform.position = new Vector3(player.transform.position.x, player.transform.position.y, player.transform.position.z - (movementSpeed * Time.deltaTime));
+
+        }
 
     }
 
@@ -105,12 +111,10 @@ public class PlayerController : MonoBehaviour
 
     private void SelectAudio(AudioSource audioSource, string nameCode)
     {
-
-        string pathFile = nameCode + (Random.Range(0, 3).ToString()) + ".ogg";
+        
         audioSource.clip = (AudioClip)AssetDatabase.LoadAssetAtPath(nameCode + (Random.Range(0, 3).ToString()) + ".ogg", typeof(AudioClip));
         audioSource.Play();
         
-
     }
 
     private IEnumerator ActivateFlag(float waitTime)
