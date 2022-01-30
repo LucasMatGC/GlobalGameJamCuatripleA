@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.EventSystems;
-using UnityEngine.Audio;
 
 public class PauseMenuContoller : MonoBehaviour
 {
@@ -12,7 +11,7 @@ public class PauseMenuContoller : MonoBehaviour
     public Canvas menuPause;
     
     private GameController gameController;
-    private string Menu = "MainMenu", CurrentLevel = "TestLevelLucas";
+    private string Menu = "MainMenu", CurrentLevel = "Final";
     private bool mouseUser = false;
     private Vector3 mouseInitPos;
 

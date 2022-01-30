@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class GameController : MonoBehaviour
@@ -9,10 +10,15 @@ public class GameController : MonoBehaviour
     public static GameController instance;
     public AudioSource music1, music2, victoryMusic, gameOverMusic;
     public Text countDownText;
-
+    public GameObject player;
+    public BoxCollider secondFinishLine;
     public int countDownValue = 3;
+
+    private string CurrentLevel = "TestLevelLucas";
     private bool isGameActive = false;
     private bool isGameFinished = false;
+    private bool isPlayerDead = false;
+    private bool reachedEnd = false;
     private AudioSource currentMusic;
 
     // Start is called before the first frame update
@@ -34,7 +40,10 @@ public class GameController : MonoBehaviour
             ShowResults();
         else if (isGameActive && !isGameFinished)
             return;
-        
+        else if (isPlayerDead && Input.GetButtonDown("HitButton"))
+            SceneManager.LoadScene(CurrentLevel);
+
+
     }
 
     private IEnumerator CountDown()
@@ -78,21 +87,52 @@ public class GameController : MonoBehaviour
 
         isGameFinished = false;
         isGameActive = false;
+        isPlayerDead = true;
         countDownText.enabled = true;
         currentMusic.Stop();
         //gameOverMusic.Play();
-        countDownText.text = "Te chocaste! Vuelve a empezar!";
+        countDownText.text = "Te chocaste! Vuelve a empezar!\nPulsa barra espaciadora";
+        countDownText.fontSize = 60;
 
 
     }
 
     public void ArriveDestination()
     {
+        if(reachedEnd)
+        {
 
-        isGameFinished = true;
-        isGameActive = false;
-        currentMusic.Stop();
+            isGameFinished = true;
+            isGameActive = false;
+            currentMusic.Stop();
+
+        } else
+        {
+
+            StartSecondPart();            
+
+        }
         //victoryMusic.Play();
+
+    }
+
+    private void StartSecondPart()
+    {
+        isGameActive = false;
+        countDownValue = 3;
+        reachedEnd = true;
+        player.transform.transform.position = new Vector3(-player.transform.transform.position.x, player.transform.transform.position.y, player.transform.transform.position.z);
+        player.transform.transform.rotation = new Quaternion(player.transform.transform.rotation.x, 180, player.transform.transform.rotation.z, player.transform.transform.rotation.w);
+        secondFinishLine.enabled = true;
+        currentMusic = music2;
+        currentMusic.Play();
+
+    }
+
+    public bool isFirstLoop()
+    {
+
+        return !reachedEnd;
 
     }
 
