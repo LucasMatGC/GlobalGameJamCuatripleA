@@ -14,7 +14,7 @@ public class GameController : MonoBehaviour
     public BoxCollider secondFinishLine;
     public int countDownValue = 3;
 
-    private string CurrentLevel = "TestLevelLucas";
+    private string CurrentLevel = "Final";
     private bool isGameActive = false;
     private bool isGameFinished = false;
     private bool isPlayerDead = false;

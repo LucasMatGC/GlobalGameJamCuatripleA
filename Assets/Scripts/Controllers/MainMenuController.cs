@@ -2,18 +2,24 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Video;
 using UnityEngine.SceneManagement;
 
 public class MainMenuController : MonoBehaviour
 {
 
     public GameObject[] pressAnyCanvases;
-    private GameObject mainCanvas;
+    public AudioSource music;
+    public VideoPlayer videoPlayer;
 
+    private GameObject mainCanvas;
     private GameObject currentCanvas;
     private bool isLoading;
+    private string levelName = "Final";
     private Vector3 cursorInitPos;
     private bool mouseUser = false;
+    private float timer = 56.5f;
+    private float currentTimer = 0f;
 
     // Start is called before the first frame update
     void Start()
@@ -24,6 +30,7 @@ public class MainMenuController : MonoBehaviour
 
         Cursor.visible = false;
         cursorInitPos = Input.mousePosition;
+        videoPlayer.loopPointReached += EndVideo;
 
     }
 
@@ -31,23 +38,45 @@ public class MainMenuController : MonoBehaviour
     void Update()
     {
 
+        ManageAudio();
+
         if (!mouseUser && Input.mousePosition != cursorInitPos)
             mouseUser = true;
 
         if (Input.anyKeyDown)
         {
-            if (currentCanvas.name == "Introduction")
-            {
-                isLoading = true;
-                if (currentCanvas.gameObject.transform.GetChild(0).gameObject.activeInHierarchy)
-                    StartCoroutine(LoadGameScene());
-                
-            } else
-                    LoadPage(mainCanvas);
+
+            ManageInput();
+
         }
 
         CursorVisibility();
 
+    }
+    private void ManageAudio()
+    {
+
+        currentTimer += Time.deltaTime;
+
+        if (currentTimer >= timer)
+        {
+
+            music.Play();
+            currentTimer = 0f;
+
+        }
+
+    }
+    private void ManageInput()
+    {
+        if (currentCanvas.name == "Introduction")
+        {
+            isLoading = true;
+            if (currentCanvas.gameObject.transform.GetChild(0).gameObject.activeInHierarchy)
+                StartCoroutine(LoadGameScene());
+                
+        } else
+                LoadPage(mainCanvas);
     }
 
     private void CursorVisibility()
@@ -74,14 +103,26 @@ public class MainMenuController : MonoBehaviour
 
     }
 
+    void EndVideo(VideoPlayer vp)
+    {
+
+        Debug.Log("EMPEZO POR FIN DE VIDEO");
+
+        SceneManager.LoadSceneAsync(levelName);
+
+    }
+
     private IEnumerator LoadGameScene()
     {
         // Carga la siguiente escena mientras el resto del código carga. La carga es prácticamente instantánea.
-        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync("Final");
+        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(levelName);
 
         // Espera hasta que la escena esté cargada
         while (!asyncLoad.isDone)
+        {
+            Debug.Log("EMPEZO POR FIN CLICK");
             yield return null;
+        }
     }
     public void ExitBtn()
     {
