@@ -7,10 +7,12 @@ public class GameController : MonoBehaviour
 {
 
     public static GameController instance;
-    public AudioSource music1, music2, victoryMusic, gameOverMusic;
+    public AudioSource music1, music2, victoryMusic, gameOverMusic, fireSource;
     public RawImage gameOverImage;
     public Text countDownText;
     public GameObject player;
+    public GameObject fire;
+    public GameObject potion;
     public BoxCollider secondFinishLine;
     public MeshRenderer slimeCore, slimeRim;
     public Material fireCore, fireRim, waterCore, waterRim;
@@ -128,6 +130,9 @@ public class GameController : MonoBehaviour
         isGameActive = false;
         isPlayerDead = false;
         reachedEnd = true;
+        fire.SetActive(true);
+        potion.SetActive(false);
+        fireSource.Play();
         checkpoint = new Vector3(-player.transform.transform.position.x, player.transform.transform.position.y, player.transform.transform.position.z);
         player.transform.transform.position = checkpoint;
         player.transform.transform.rotation = new Quaternion(player.transform.transform.rotation.x, 180, player.transform.transform.rotation.z, player.transform.transform.rotation.w);
