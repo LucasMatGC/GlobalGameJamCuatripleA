@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class GameController : MonoBehaviour
@@ -17,12 +16,12 @@ public class GameController : MonoBehaviour
     public Material fireCore, fireRim, waterCore, waterRim;
     public int countDownValue = 3;
 
-    private string CurrentLevel = "Final";
+    private AudioSource currentMusic;
+    private Vector3 checkpoint;
     private bool isGameActive = false;
     private bool isGameFinished = false;
     private bool isPlayerDead = false;
     private bool reachedEnd = false;
-    private AudioSource currentMusic;
 
     // Start is called before the first frame update
     void Start()
@@ -30,6 +29,7 @@ public class GameController : MonoBehaviour
 
         instance = this;
         currentMusic = music1;
+        checkpoint = player.transform.position;
         
     }
 
@@ -44,7 +44,7 @@ public class GameController : MonoBehaviour
         else if (isGameActive && !isGameFinished)
             return;
         else if (isPlayerDead && Input.GetButtonDown("JumpButton"))
-            SceneManager.LoadScene(CurrentLevel);
+            ManageRespawn();
 
 
     }
@@ -53,6 +53,7 @@ public class GameController : MonoBehaviour
     {
 
         countDownText.enabled = true;
+        countDownText.fontSize = 300;
 
         while (countDownValue > 0)
         {
@@ -65,7 +66,7 @@ public class GameController : MonoBehaviour
         countDownText.text = "YA!";
         isGameActive = true;
         currentMusic.Play();
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.2f);
         countDownText.enabled = false;
 
     }
@@ -88,11 +89,11 @@ public class GameController : MonoBehaviour
     public void EndGame()
     {
 
+        countDownText.enabled = true;
         isGameFinished = false;
+        gameOverImage.enabled = true;
         isGameActive = false;
         isPlayerDead = true;
-        countDownText.enabled = true;
-        gameOverImage.enabled = true;
         currentMusic.Stop();
         gameOverMusic.Play();
         countDownText.text = "Te chocaste! Vuelve a empezar!\nPulsa barra espaciadora";
@@ -123,16 +124,16 @@ public class GameController : MonoBehaviour
 
     private void StartSecondPart()
     {
-        isGameActive = false;
         countDownValue = 3;
+        isGameActive = false;
+        isPlayerDead = false;
         reachedEnd = true;
-        player.transform.transform.position = new Vector3(-player.transform.transform.position.x, player.transform.transform.position.y, player.transform.transform.position.z);
+        checkpoint = new Vector3(-player.transform.transform.position.x, player.transform.transform.position.y, player.transform.transform.position.z);
+        player.transform.transform.position = checkpoint;
         player.transform.transform.rotation = new Quaternion(player.transform.transform.rotation.x, 180, player.transform.transform.rotation.z, player.transform.transform.rotation.w);
         slimeRim.material = waterRim;
         slimeCore.material = waterCore;
         secondFinishLine.enabled = true;
-        currentMusic = music2;
-        currentMusic.Play();
 
     }
 
@@ -147,6 +148,18 @@ public class GameController : MonoBehaviour
     {
 
         return currentMusic;
+
+    }
+
+    public void ManageRespawn()
+    {
+
+        countDownText.enabled = false;
+        countDownValue = 3;
+        gameOverImage.enabled = false;
+        isGameActive = false;
+        isPlayerDead = false;
+        player.transform.position = checkpoint;
 
     }
 
