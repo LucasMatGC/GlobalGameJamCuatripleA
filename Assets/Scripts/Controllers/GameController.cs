@@ -91,7 +91,7 @@ public class GameController : MonoBehaviour
 
         countDownText.enabled = true;
         countDownText.text = "Press jump to return to the Main Menu";
-        countDownText.transform.position = new Vector3(countDownText.transform.position.x, -360f, countDownText.transform.position.z);
+        countDownText.rectTransform.position = new Vector3(countDownText.transform.position.x, -360f, countDownText.transform.position.z);
         countDownText.fontSize = 80;
         countDownText.color = Color.white;
         endScreen.SetActive(true);
