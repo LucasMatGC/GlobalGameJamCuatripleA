@@ -112,7 +112,8 @@ public class PlayerController : MonoBehaviour
     private void SelectAudio(AudioSource audioSource, string nameCode)
     {
         
-        audioSource.clip = (AudioClip)AssetDatabase.LoadAssetAtPath(nameCode + (Random.Range(0, 3).ToString()) + ".ogg", typeof(AudioClip));
+       // audioSource.clip = Resources.LoadAll("Audio/SFX/" + nameCode, typeof(AudioClip)).Cast<AudioClip>().ToArray()[(Random.Range(0, 3).ToString())];
+        // (AudioClip)AssetDatabase.LoadAssetAtPath(nameCode + (Random.Range(0, 3).ToString()) + ".ogg", typeof(AudioClip));
         audioSource.Play();
         
     }
