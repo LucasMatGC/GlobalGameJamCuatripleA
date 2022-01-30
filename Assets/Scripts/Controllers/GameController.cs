@@ -94,7 +94,7 @@ public class GameController : MonoBehaviour
         countDownText.enabled = true;
         gameOverImage.enabled = true;
         currentMusic.Stop();
-        //gameOverMusic.Play();
+        gameOverMusic.Play();
         countDownText.text = "Te chocaste! Vuelve a empezar!\nPulsa barra espaciadora";
         countDownText.fontSize = 60;
 
@@ -112,11 +112,12 @@ public class GameController : MonoBehaviour
 
         } else
         {
-
+            currentMusic.Stop();
+            victoryMusic.Play();
             StartSecondPart();            
 
         }
-        //victoryMusic.Play();
+        victoryMusic.Play();
 
     }
 
