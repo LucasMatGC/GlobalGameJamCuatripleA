@@ -139,11 +139,16 @@ public class PlayerController : MonoBehaviour
         if (other.tag == "JumpSlide")
             gameController.EndGame();
 
-        else if (other.tag == "Hit" && canHit)
+        else if ((other.tag == "Hit" && canHit) || (other.tag == "Hit" || !canJumpOrSlide))
             gameController.EndGame();
 
         else if (other.tag == "Hit" && !canHit)
+        {
+
+            gameController.AddRespawnableObstacle(other.gameObject);
             return;
+
+        }
     }
 
 }

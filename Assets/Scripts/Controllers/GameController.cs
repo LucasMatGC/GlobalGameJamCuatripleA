@@ -18,6 +18,7 @@ public class GameController : MonoBehaviour
     public Material fireCore, fireRim, waterCore, waterRim;
     public int countDownValue = 3;
 
+    private List<GameObject> respawnableObstacles;
     private AudioSource currentMusic;
     private Vector3 checkpoint;
     private bool isGameActive = false;
@@ -133,6 +134,7 @@ public class GameController : MonoBehaviour
         fire.SetActive(true);
         potion.SetActive(false);
         fireSource.Play();
+        RespawnObstacles();
         checkpoint = new Vector3(-player.transform.transform.position.x, player.transform.transform.position.y, player.transform.transform.position.z);
         player.transform.transform.position = checkpoint;
         player.transform.transform.rotation = new Quaternion(player.transform.transform.rotation.x, 180, player.transform.transform.rotation.z, player.transform.transform.rotation.w);
@@ -163,8 +165,31 @@ public class GameController : MonoBehaviour
         countDownValue = 3;
         gameOverImage.enabled = false;
         isGameActive = false;
+        RespawnObstacles();
         isPlayerDead = false;
         player.transform.position = checkpoint;
+
+    }
+
+    public void AddRespawnableObstacle (GameObject obstable)
+    {
+
+        obstable.SetActive(false);
+        respawnableObstacles.Add(obstable);
+
+    }
+
+    private void RespawnObstacles()
+    {
+
+        foreach(GameObject respawnable in respawnableObstacles)
+        {
+
+            respawnable.SetActive(true);
+
+        }
+
+        respawnableObstacles.Clear();
 
     }
 
