@@ -27,7 +27,7 @@ public class FinishController : MonoBehaviour
     {
         if(other.tag == "Player")
         {
-            Debug.Log("FINISH!");
+
             gameController.ArriveDestination();
             this.GetComponent<BoxCollider>().enabled = false;
 

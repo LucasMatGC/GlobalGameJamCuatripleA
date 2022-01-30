@@ -106,8 +106,6 @@ public class MainMenuController : MonoBehaviour
     void EndVideo(VideoPlayer vp)
     {
 
-        Debug.Log("EMPEZO POR FIN DE VIDEO");
-
         SceneManager.LoadSceneAsync(levelName);
 
     }
@@ -120,7 +118,6 @@ public class MainMenuController : MonoBehaviour
         // Espera hasta que la escena esté cargada
         while (!asyncLoad.isDone)
         {
-            Debug.Log("EMPEZO POR FIN CLICK");
             yield return null;
         }
     }

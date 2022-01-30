@@ -9,9 +9,12 @@ public class GameController : MonoBehaviour
 
     public static GameController instance;
     public AudioSource music1, music2, victoryMusic, gameOverMusic;
+    public RawImage gameOverImage;
     public Text countDownText;
     public GameObject player;
     public BoxCollider secondFinishLine;
+    public MeshRenderer slimeCore, slimeRim;
+    public Material fireCore, fireRim, waterCore, waterRim;
     public int countDownValue = 3;
 
     private string CurrentLevel = "Final";
@@ -40,7 +43,7 @@ public class GameController : MonoBehaviour
             ShowResults();
         else if (isGameActive && !isGameFinished)
             return;
-        else if (isPlayerDead && Input.GetButtonDown("HitButton"))
+        else if (isPlayerDead && Input.GetButtonDown("JumpButton"))
             SceneManager.LoadScene(CurrentLevel);
 
 
@@ -89,6 +92,7 @@ public class GameController : MonoBehaviour
         isGameActive = false;
         isPlayerDead = true;
         countDownText.enabled = true;
+        gameOverImage.enabled = true;
         currentMusic.Stop();
         //gameOverMusic.Play();
         countDownText.text = "Te chocaste! Vuelve a empezar!\nPulsa barra espaciadora";
@@ -123,6 +127,8 @@ public class GameController : MonoBehaviour
         reachedEnd = true;
         player.transform.transform.position = new Vector3(-player.transform.transform.position.x, player.transform.transform.position.y, player.transform.transform.position.z);
         player.transform.transform.rotation = new Quaternion(player.transform.transform.rotation.x, 180, player.transform.transform.rotation.z, player.transform.transform.rotation.w);
+        slimeRim.material = waterRim;
+        slimeCore.material = waterCore;
         secondFinishLine.enabled = true;
         currentMusic = music2;
         currentMusic.Play();
